@@ -23,10 +23,39 @@ class _PostsPageState extends State<PostsPage> {
             decoration: BoxDecoration(
                 border: Border.all(color: Theme.of(context).primaryColor),
                 borderRadius: const BorderRadius.all(Radius.circular(8))),
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  snapshot.data![index].title!,
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    snapshot.data![index].id!.toString(),
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    snapshot.data![index].title!,
+                    style: TextStyle(
+                        color: Color(0xff0064C3),
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    snapshot.data![index].body!,
+                    style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold),
+                  ),
                 )
               ],
             )),
@@ -54,28 +83,22 @@ class _PostsPageState extends State<PostsPage> {
                       currentFocus.unfocus();
                     }
                   },
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      StreamBuilder<List<BlogPostEntity>?>(
-                          stream: presenter.postsList,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return ConstrainedBox(
-                                constraints: BoxConstraints(maxHeight: height),
-                                child: ListView.separated(
-                                    itemBuilder: (context, index) =>
-                                        makePostCard(snapshot, index),
-                                    separatorBuilder: (context, index) =>
-                                        const SizedBox(height: 16),
-                                    itemCount: snapshot.data!.length),
-                              );
-                            }
-                            return Container();
-                          }),
-                    ],
-                  ),
+                  child: StreamBuilder<List<BlogPostEntity>?>(
+                      stream: presenter.postsList,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return ConstrainedBox(
+                            constraints: BoxConstraints(maxHeight: height),
+                            child: ListView.separated(
+                                itemBuilder: (context, index) =>
+                                    makePostCard(snapshot, index),
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(height: 16),
+                                itemCount: snapshot.data!.length),
+                          );
+                        }
+                        return Container();
+                      }),
                 ),
               ),
             );
