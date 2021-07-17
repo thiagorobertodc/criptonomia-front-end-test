@@ -1,5 +1,5 @@
 import '../entities/entities.dart';
 
-abstract class FetcBlogPosts {
-  Future<List<BlogPostEntity?>> get();
+abstract class FetchBlogPosts {
+  Future<List<BlogPostEntity>?> get();
 }

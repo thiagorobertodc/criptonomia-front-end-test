@@ -1,9 +1,16 @@
 import 'package:get/get.dart';
 
-import '../../ui/pages/pages.dart';
+import '../../domain/usecases/usecases.dart';
 import '../../domain/entities/entities.dart';
+import '../../ui/pages/pages.dart';
 
 class GetxHomePresenter extends GetxController implements HomePresenter {
+  FetchBlogPosts fetchBlogPosts;
+
+  GetxHomePresenter({
+    required this.fetchBlogPosts,
+  });
+
   final _isLoadingPost = false.obs;
   final _postList = Rx<List<BlogPostEntity>?>(null);
 
@@ -12,6 +19,7 @@ class GetxHomePresenter extends GetxController implements HomePresenter {
   Stream<bool?>? get isLoadingPostStream => _isLoadingPost.stream;
 
   Future<void> getPosts() async {
-    return null;
+    final posts = await fetchBlogPosts.get();
+    _postList.subject.add(posts);
   }
 }
