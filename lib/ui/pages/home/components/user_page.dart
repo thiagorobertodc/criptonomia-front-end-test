@@ -1,25 +1,25 @@
-import 'package:criptonomia/domain/entities/blog_post_entity.dart';
+import 'package:criptonomia/domain/entities/entities.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../pages.dart';
 import '../../../components/components.dart';
 
-class PostsPage extends StatefulWidget {
+class UsersPage extends StatefulWidget {
   final void Function(int) onAddButtonTapped;
-  const PostsPage(this.onAddButtonTapped);
+  const UsersPage(this.onAddButtonTapped);
   @override
-  _PostsPageState createState() => _PostsPageState();
+  _UsersPageState createState() => _UsersPageState();
 }
 
-class _PostsPageState extends State<PostsPage>
-    with AutomaticKeepAliveClientMixin<PostsPage> {
-  Widget makePostCard(AsyncSnapshot<List<BlogPostEntity>?> snapshot, int index,
+class _UsersPageState extends State<UsersPage>
+    with AutomaticKeepAliveClientMixin<UsersPage> {
+  Widget makeUserCard(AsyncSnapshot<List<UserEntity>?> snapshot, int index,
       HomePresenter presenter) {
     return GestureDetector(
-      onTap: () {
-        presenter.getComments(snapshot.data![index].id.toString());
-        widget.onAddButtonTapped(1);
+      onTap: () async {
+        await presenter.setIndex(index);
+        widget.onAddButtonTapped(3);
       },
       child: Stack(
         alignment: Alignment.center,
@@ -46,7 +46,7 @@ class _PostsPageState extends State<PostsPage>
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
-                      snapshot.data![index].title!,
+                      snapshot.data![index].name!,
                       style: TextStyle(
                           color: Color(0xff0064C3),
                           fontSize: 20,
@@ -56,7 +56,17 @@ class _PostsPageState extends State<PostsPage>
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
-                      snapshot.data![index].body!,
+                      snapshot.data![index].username!,
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      snapshot.data![index].email!,
                       style: TextStyle(
                           color: Colors.grey,
                           fontSize: 10,
@@ -76,16 +86,13 @@ class _PostsPageState extends State<PostsPage>
     final height = MediaQuery.of(context).size.height * 1.1;
     super.build(context);
     return Scaffold(
-      appBar:
-          PageHeader.getAppBar('Posts', context, widget.onAddButtonTapped, 0),
+      appBar: PageHeader.getAppBar(
+          'Usuários', context, widget.onAddButtonTapped, 2),
       floatingActionButton: FloatingActionButton(
         child: Center(
-          child: Icon(Icons.person),
+          child: Icon(Icons.post_add),
         ),
-        onPressed: () {
-          presenter.getUsers();
-          widget.onAddButtonTapped(2);
-        },
+        onPressed: () => widget.onAddButtonTapped(0),
       ),
       body: SafeArea(
         child: LayoutBuilder(
@@ -101,15 +108,15 @@ class _PostsPageState extends State<PostsPage>
                       currentFocus.unfocus();
                     }
                   },
-                  child: StreamBuilder<List<BlogPostEntity>?>(
-                      stream: presenter.postsList,
+                  child: StreamBuilder<List<UserEntity>?>(
+                      stream: presenter.usersList,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           return ConstrainedBox(
                             constraints: BoxConstraints(maxHeight: height),
                             child: ListView.separated(
                                 itemBuilder: (context, index) =>
-                                    makePostCard(snapshot, index, presenter),
+                                    makeUserCard(snapshot, index, presenter),
                                 separatorBuilder: (context, index) =>
                                     const SizedBox(height: 16),
                                 itemCount: snapshot.data!.length),
