@@ -12,54 +12,61 @@ class PostsPage extends StatefulWidget {
   _PostsPageState createState() => _PostsPageState();
 }
 
-class _PostsPageState extends State<PostsPage> {
-  Widget makePostCard(
-      AsyncSnapshot<List<BlogPostEntity>?> snapshot, int index) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Container(
-            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            decoration: BoxDecoration(
-                border: Border.all(color: Theme.of(context).primaryColor),
-                borderRadius: const BorderRadius.all(Radius.circular(8))),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    snapshot.data![index].id!.toString(),
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
+class _PostsPageState extends State<PostsPage>
+    with AutomaticKeepAliveClientMixin<PostsPage> {
+  Widget makePostCard(AsyncSnapshot<List<BlogPostEntity>?> snapshot, int index,
+      HomePresenter presenter) {
+    return GestureDetector(
+      onTap: () {
+        presenter.getComments(snapshot.data![index].id.toString());
+        widget.onAddButtonTapped(1);
+      },
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Theme.of(context).primaryColor),
+                  borderRadius: const BorderRadius.all(Radius.circular(8))),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      snapshot.data![index].id!.toString(),
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    snapshot.data![index].title!,
-                    style: TextStyle(
-                        color: Color(0xff0064C3),
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      snapshot.data![index].title!,
+                      style: TextStyle(
+                          color: Color(0xff0064C3),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    snapshot.data![index].body!,
-                    style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold),
-                  ),
-                )
-              ],
-            )),
-      ],
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      snapshot.data![index].body!,
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  )
+                ],
+              )),
+        ],
+      ),
     );
   }
 
@@ -67,6 +74,7 @@ class _PostsPageState extends State<PostsPage> {
   Widget build(BuildContext context) {
     final presenter = Provider.of<HomePresenter>(context);
     final height = MediaQuery.of(context).size.height * 1.1;
+    super.build(context);
     return Scaffold(
       appBar: PageHeader.getAppBar('Posts', context),
       body: SafeArea(
@@ -91,7 +99,7 @@ class _PostsPageState extends State<PostsPage> {
                             constraints: BoxConstraints(maxHeight: height),
                             child: ListView.separated(
                                 itemBuilder: (context, index) =>
-                                    makePostCard(snapshot, index),
+                                    makePostCard(snapshot, index, presenter),
                                 separatorBuilder: (context, index) =>
                                     const SizedBox(height: 16),
                                 itemCount: snapshot.data!.length),
@@ -107,4 +115,7 @@ class _PostsPageState extends State<PostsPage> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

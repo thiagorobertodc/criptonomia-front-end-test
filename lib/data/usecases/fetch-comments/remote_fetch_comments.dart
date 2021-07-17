@@ -9,10 +9,10 @@ class RemoteFetchComments implements FetchComments {
   final String url;
 
   RemoteFetchComments({required this.httpClient, required this.url});
-  Future<List<PostCommentEntity>?> get() async {
+  Future<List<PostCommentEntity>?> get(String id) async {
     try {
       final httpResponse = await httpClient.request(
-        url: url,
+        url: url + '/' + id + '/comments',
         method: 'get',
       );
       final List<Map> postsComments =

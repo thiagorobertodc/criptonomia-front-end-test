@@ -33,6 +33,7 @@ class _HomePageState extends State<HomePage> {
         physics: const NeverScrollableScrollPhysics(),
         children: [
           PostsPage(onAddButtonTapped),
+          CommentsPage(onAddButtonTapped),
         ],
       ),
     );

@@ -5,5 +5,6 @@ import '../../../../ui/pages/pages.dart';
 HomePresenter makeGetxHomePresenter() {
   return GetxHomePresenter(
     fetchBlogPosts: makeFetchBlogPosts(),
+    fetchComments: makeFetchComments(),
   );
 }
