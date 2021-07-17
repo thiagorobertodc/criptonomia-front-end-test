@@ -26,10 +26,7 @@ class App extends StatelessWidget {
       initialRoute: '/',
       getPages: [
         GetPage(name: '/', page: makeSplashPage, transition: Transition.fade),
-        GetPage(
-            name: '/home',
-            page: makeHomePage,
-            transition: Transition.rightToLeft),
+        GetPage(name: '/home', page: makeHomePage),
       ],
     );
   }

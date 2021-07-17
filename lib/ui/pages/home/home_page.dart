@@ -34,6 +34,8 @@ class _HomePageState extends State<HomePage> {
         children: [
           PostsPage(onAddButtonTapped),
           CommentsPage(onAddButtonTapped),
+          UsersPage(onAddButtonTapped),
+          UserDetailPage(onAddButtonTapped),
         ],
       ),
     );

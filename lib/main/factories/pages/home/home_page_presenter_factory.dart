@@ -6,5 +6,6 @@ HomePresenter makeGetxHomePresenter() {
   return GetxHomePresenter(
     fetchBlogPosts: makeFetchBlogPosts(),
     fetchComments: makeFetchComments(),
+    fetchUsers: makeFetchUsers(),
   );
 }
