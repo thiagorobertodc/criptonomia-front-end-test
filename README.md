@@ -15,7 +15,7 @@ O código é escrito utilizando Arquitetura Limpa - ou Clean Architeture. Nas ca
 
 Para rodar a aplicação, com o Flutter instalado na máquina e um emulador à disposição - ou aparelho físico - os comandos a seguir são suficientes: 
 
- cd criptonomia-front-end-test
+ cd criptonomia-front-end-test &&
  flutter run lib/main/main.dart
  
  Também há um arquivo específico para o VS Code que permite a execução pela barra lateral esquerda. É só selecionar a ferramenta Executar e Depurar e selecionar a opção Criptonomia.
